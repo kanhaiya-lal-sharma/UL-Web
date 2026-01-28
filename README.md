@@ -95,7 +95,7 @@ The tests run on multiple browsers supported by Playwright:
 ---
 
 
----
+
 
 ## 🔒 Disclaimer
 
