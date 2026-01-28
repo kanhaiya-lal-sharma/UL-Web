@@ -44,6 +44,7 @@ UL-Web/
 │   ├── loginExistingUser.spec.js
 │   └── heroSection.spec.js-snapshots/
 │       └── ul-heroImage-chromium-win32.png
+|
 ├── playwright.config.js
 ├── package.json
 ├── package-lock.json
@@ -110,11 +111,12 @@ This project is created **solely for learning, practice, and skill demonstration
 
 ---
 
-## 👤 Author
+👤 Author
 
-**Kanhaiya Sharma**
+Kanhaiya Sharma
 QA Automation Engineer
 Playwright | JavaScript | Web Automation
+
 
 GitHub: [https://github.com/kanhaiya-lal-sharma](https://github.com/kanhaiya-lal-sharma)
 
