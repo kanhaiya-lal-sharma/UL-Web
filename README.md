@@ -94,10 +94,6 @@ The tests run on multiple browsers supported by Playwright:
 
 ---
 
-## 📸 Snapshot Testing
-
-Snapshot testing is implemented where applicable to ensure UI consistency.
-Snapshots are committed to the repository for version control.
 
 ---
 
