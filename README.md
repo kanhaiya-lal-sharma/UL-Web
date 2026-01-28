@@ -4,7 +4,7 @@
 ```md
 # University Living – QA Automation (Playwright + JavaScript)
 
-This repository contains **end-to-end QA automation tests** for the **University Living** website, created using **Playwright with JavaScript**.
+This repository contains **end-to-end QA automation tests** for the **University Living** website, created using **Playwright   with JavaScript**.
 
 The purpose of this project is to validate critical user flows, ensure UI stability, and demonstrate real-world QA automation skills using modern testing tools.
 
