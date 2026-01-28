@@ -111,11 +111,13 @@ This project is created **solely for learning, practice, and skill demonstration
 
 ---
 
-👤 Author
-Kanhaiya Sharma
-QA Automation Engineer
-Playwright | JavaScript | Web Automation
-GitHub: https://github.com/kanhaiya-lal-sharma
+<h2>👤 Author</h2>
+
+<b>Kanhaiya Lal Sharma</b><br>
+QA Automation Engineer<br>
+Playwright | JavaScript | Web Automation<br>
+<a href="https://github.com/kanhaiya-lal-sharma">GitHub Profile</a>
+
 
 
 
