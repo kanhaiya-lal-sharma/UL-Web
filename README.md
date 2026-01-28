@@ -52,24 +52,7 @@ UL-Web/
 
 ```
 
-UL-Web/
-│
-├── tests/
-│ ├── sanityTest.spec.js
-│ ├── heroSection.spec.js
-│ ├── exploreTopCities.spec.js
-│ ├── loginNewUser.spec.js
-│ ├── loginExistingUser.spec.js
-│ └── heroSection.spec.js-snapshots/
-│ └── ul-heroImage-chromium-win32.png
-│
-├── playwright.config.js
-├── package.json
-├── package-lock.json
-├── .gitignore
-└── README.md
 
-````
 
 ---
 
