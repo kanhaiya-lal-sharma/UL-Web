@@ -67,13 +67,13 @@ test("My kind room",async({page})=>{
     await expect(mkrButton).toBeVisible();
 })
 
-test("Group Booking",async({page})=>{ 
+test("Valentine sale",async({page})=>{ 
 
     await page.goto("https://www.universityliving.com/", {
     waitUntil: "domcontentloaded",
   });
 
-    const gbButton=  page.getByRole("link",{ name: /Group Booking/i,});
+    const gbButton=  page.getByRole("link",{ name: /Valentine Sale/i,});
     await expect(gbButton).toBeVisible();
 })
 

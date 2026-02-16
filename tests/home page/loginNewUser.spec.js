@@ -51,7 +51,7 @@ await lastNameInput.fill("test");
 const countryCodeInput=page.locator('//div[@class="flag in"  ]');
 await expect(countryCodeInput).toBeVisible();
 await countryCodeInput.click();
-await page.getByText('China', { exact: false }).click();
+await page.getByText('Angola', { exact: false }).click();
 
 const phoneNumberInput =page.getByRole("textbox",{name:"Phone Number"});
 await expect(phoneNumberInput).toBeVisible();
