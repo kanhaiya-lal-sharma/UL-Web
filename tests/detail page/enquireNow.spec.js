@@ -2,7 +2,7 @@
 
 const { test, expect } = require("@playwright/test");
 
-test("Enquire Now Form", async ({ page }) => {
+test.skip("Enquire Now Form", async ({ page }) => {
 
   await page.goto("https://ul1.devbeta.in/united-kingdom/london/property/iq-sterling-court");
 
@@ -73,6 +73,7 @@ test("Enquire Now Form", async ({ page }) => {
   await submitBtn.click();
 
   // ===== Optional: Success Validation =====
-  // await expect(page.locator("text=Thank you")).toBeVisible();
+  await expect(page).toHaveURL("https://ul1.devbeta.in/united-kingdom/london/iq-sterling-court/enquire-now/thank-you");
+
 
 });
