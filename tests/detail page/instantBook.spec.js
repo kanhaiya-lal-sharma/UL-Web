@@ -56,17 +56,37 @@ await countryCodeInput.click();
 await signUpModal.getByText('Angola', { exact: false }).click();
 //await signUpModal.locator('#contactNumber').fill(phone);
 
+// const phoneNumberInput = signUpModal.locator('#contactNumber');
+// await expect(phoneNumberInput).toBeVisible();
 
-const phoneNumberInput =page.getByRole("textbox",{name:"Phone Number"}).nth(1);
+// await phoneNumberInput.click();
+// await phoneNumberInput.fill("");               
+// await phoneNumberInput.fill("1234567890");
+
+const phoneInput = signUpModal.locator('#contactNumber');
+
+await phoneInput.focus();               // pehle focus forcefully
+await page.keyboard.down('Control');    // ya Meta key Mac pe
+await page.keyboard.press('A');         // select all
+await page.keyboard.up('Control');
+await page.keyboard.press('Backspace'); // clear karo
+
+// Ab ek-ek digit type karo (delay ke saath)
+await phoneInput.type(phone, { delay: 120 });  
+// ya
+//await phoneInput.pressSequentially(phone, { delay: 100 });
+
+/*
+const phoneNumberInput =page.getByRole("textbox",{name:"Phone Number"});
 await expect(phoneNumberInput).toBeVisible();
 await phoneNumberInput.fill(phone);
-
+*/
 
 // const phoneNumberInput =signUpModal.getByRole("textbox",{name:"contactNumber"});
 // //console.log({phone, phoneNumberInput});
 // await expect(phoneNumberInput).toBeVisible();
 //  await phoneNumberInput.press('Control+A');
-//   await phoneNumberInput.press('Backspace');
+//   await phoneNumberInput.press('Enter');
 //  await phoneNumberInput.type(phone, { delay: 100 });
 
 //  await phoneNumberInput.click();
@@ -79,5 +99,7 @@ const signUpCTA= signUpModal.getByRole("button",{name:"Sign Up"});
   
   await signUpCTA.click();
 
-
+const otpModal= page.getByText("To continue, please enter the 5-digit code sent to").locator('..');
+ 
+ expect(otpModal).toBeVisible();
 })
