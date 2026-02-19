@@ -102,4 +102,68 @@ const signUpCTA= signUpModal.getByRole("button",{name:"Sign Up"});
 const otpModal= page.getByText("To continue, please enter the 5-digit code sent to").locator('..');
  
  expect(otpModal).toBeVisible();
+
+ const otpValues = ["5", "4", "3", "2", "1"];
+
+  for (let i = 0; i < otpValues.length; i++) {
+    const otpInput = otpModal.locator(`input[name="otp${i}"]`);
+    await expect(otpInput).toBeVisible();
+    await otpInput.fill(otpValues[i]);
+  }
+
+  await otpModal.getByRole("button", { name: "Continue" }).click();
+
+   const partialModal = page.getByText("Great choice!").locator('..');
+
+   partialModal.locator("button.SingleDatePickerInput_calendarIcon").click();
+
+
+
+
+   // 1. Month block locate karo
+const monthBlock = partialModal.locator(".ULDatepicker_month-block__8Kq8_");
+
+// 2. Current month / dropdown trigger pe click karo (yeh kholta hai list)
+await monthBlock.locator('button, [role="button"], [aria-haspopup="listbox"], select, div').first().click();
+
+// 3. Ab list khul chuki hai → September wale option pe click
+await partialModal.getByRole('option', { name: 'September', exact: true }).click();
+// ya agar role="option" nahi mil raha to simple text click
+// await monthBlock.getByText('September', { exact: true }).click();
+
+// Wait thoda sa (UI update hone ke liye)
+await page.waitForTimeout(400);
+
+// Same year ke liye (agar year ka class alag hai to usko adjust kar dena)
+const yearBlock = partialModal.locator('[class*="year"]'); // ya jo bhi year wali class ho
+
+await yearBlock.locator('button, [role="button"], [aria-haspopup="listbox"], select').first().click();
+
+await partialModal.getByRole('option', { name: '1999', exact: true }).click();
+// ya
+// await yearBlock.getByText('1999', { exact: true }).click();
+  // const monthAndyearDiv = partialModal.locator(".ULDatepicker_month-year-wrapper__Zh95r");
+
+  // const monthSelect = monthAndyearDiv.locator(".ULDatepicker_month-block__8Kq8_").getByRole("combobox").selectOption("September");
+
+  /*
+  // Month wala (jo months list karta hai)
+const monthDropdown = partialModal
+  .locator('select')
+  .filter({ has: page.getByText('February') })   // current month visible ho to
+  .first();
+
+// Year wala (jo years list karta hai)
+const yearDropdown = partialModal
+  .locator('select')
+  .filter({ has: page.getByText('2010') })       // current year visible ho to
+  .first();
+
+await monthDropdown.selectOption('September');
+await yearDropdown.selectOption('1999');
+
+*/
+
+
+    
 })
