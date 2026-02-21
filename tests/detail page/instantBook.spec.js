@@ -86,7 +86,7 @@ await phoneNumberInput.fill(phone);
 // //console.log({phone, phoneNumberInput});
 // await expect(phoneNumberInput).toBeVisible();
 //  await phoneNumberInput.press('Control+A');
-//   await phoneNumberInput.press('Enter');
+//   await phoneNumberInput.press('Backspace');
 //  await phoneNumberInput.type(phone, { delay: 100 });
 
 //  await phoneNumberInput.click();
