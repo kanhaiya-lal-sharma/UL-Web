@@ -1,169 +1,110 @@
 
-const{test,expect}=require("@playwright/test");
 
-test("Instant Book",async({page})=>{
+const { test, expect } = require("@playwright/test");
 
-     await page.goto("https://ul1.devbeta.in/united-kingdom/london/property/iq-sterling-court");
+test("Instant Book - Select DOB in Calendar (Working)", async ({ page }) => {
+  await page.goto("https://ul1.devbeta.in/united-kingdom/london/property/iq-sterling-court");
 
-     // Click first Instant Book  under Bronze En Suite
-
-    const firstInstantBook = page.locator('div')
-    .filter({ hasText: 'Bronze En Suite' })
-    .getByRole('button', { name: /Instant book/i })
+  // Bronze En Suite Instant Book
+  const firstInstantBook = page
+    .locator("div")
+    .filter({ hasText: "Bronze En Suite" })
+    .getByRole("button", { name: /instant book/i })
     .first();
 
   await firstInstantBook.click();
 
-  //login modal
+  // Login
+  const loginModal = page.getByText("Welcome to University Living").locator("..");
+  const emailInput = loginModal.getByRole("textbox", { name: "email" });
 
-  const logInModal = page.getByText("Welcome to University Living").locator('..');
+  const now = new Date();
+  const timestamp = `${now.getFullYear()}${now.getMonth() + 1}${now.getDate()}${now.getHours()}${now.getMinutes()}${now.getSeconds()}`;
+  const email = `user_${timestamp}.university@yopmail.com`;
+  const phone = timestamp;
 
-  const emailInput=logInModal.getByRole("textbox",{name:"email"});
+  console.log("Generated email:", email);
 
-  const date = new Date();
-
- const eno = `${date.getFullYear()}${date.getMonth()+1}${date.getDate()}${date.getHours()}${date.getMinutes()}${date.getSeconds()}`;
-
-const phone =`${date.getFullYear()}${date.getMonth()+1}${date.getDate()}${date.getHours()}${date.getMinutes()}`;
-
-  const email=`user_${eno}.university@yopmail.com`;
-
-  console.log(email);
-
-  
   await emailInput.fill(email);
+  await loginModal.getByRole("button", { name: "Login" }).click();
 
-  logInModal.getByRole("Button",{name:"Login"}).click();
+  // Sign Up
+  const signupModal = page.getByRole("button", { name: "Sign Up" }).locator("..");
 
-  //sign up modal
+  await signupModal.getByRole("textbox", { name: "First Name" }).fill("kanhaiya lal");
+  await signupModal.getByRole("textbox", { name: "Last Name" }).fill("sharma");
 
-  const signUpModal = page.getByRole("button",{name:"Sign Up"}).locator('..');
+  await signupModal.locator('//div[contains(@class, "flag in")]').click();
+  await signupModal.getByText("Angola", { exact: false }).click();
 
-  // filling sign up form
+  const phoneInput = signupModal.locator("#contactNumber");
+  await phoneInput.focus();
+  await phoneInput.press("Control+A");
+  await phoneInput.press("Backspace");
+  await phoneInput.pressSequentially(phone, { delay: 80 });
 
-const firstNameInput =signUpModal.getByRole("textbox",{name:"First Name"});
-await firstNameInput.fill("kanhaiya lal");
+  const signupBtn = signupModal.getByRole("button", { name: "Sign Up" });
+  await expect(signupBtn).toBeEnabled({ timeout: 10000 });
+  await signupBtn.click();
 
-const lastNameInput =signUpModal.getByRole("textbox",{name:"Last Name"});
-await lastNameInput.fill("sharma");
+  // OTP
+  const otpModal = page.getByText("To continue, please enter the 5-digit code").locator("..");
+  await expect(otpModal).toBeVisible({ timeout: 15000 });
 
-// const phoneNumberInput =signUpModal.getByRole("textbox",{name:"contanctNumber"});
-// await phoneNumberInput.fill(phone);
-
-
-const countryCodeInput=signUpModal.locator('//div[@class="flag in"  ]');
-await countryCodeInput.click();
-await signUpModal.getByText('Angola', { exact: false }).click();
-//await signUpModal.locator('#contactNumber').fill(phone);
-
-// const phoneNumberInput = signUpModal.locator('#contactNumber');
-// await expect(phoneNumberInput).toBeVisible();
-
-// await phoneNumberInput.click();
-// await phoneNumberInput.fill("");               
-// await phoneNumberInput.fill("1234567890");
-
-const phoneInput = signUpModal.locator('#contactNumber');
-
-await phoneInput.focus();               // pehle focus forcefully
-await page.keyboard.down('Control');    // ya Meta key Mac pe
-await page.keyboard.press('A');         // select all
-await page.keyboard.up('Control');
-await page.keyboard.press('Backspace'); // clear karo
-
-// Ab ek-ek digit type karo (delay ke saath)
-await phoneInput.type(phone, { delay: 120 });  
-// ya
-//await phoneInput.pressSequentially(phone, { delay: 100 });
-
-/*
-const phoneNumberInput =page.getByRole("textbox",{name:"Phone Number"});
-await expect(phoneNumberInput).toBeVisible();
-await phoneNumberInput.fill(phone);
-*/
-
-// const phoneNumberInput =signUpModal.getByRole("textbox",{name:"contactNumber"});
-// //console.log({phone, phoneNumberInput});
-// await expect(phoneNumberInput).toBeVisible();
-//  await phoneNumberInput.press('Control+A');
-//   await phoneNumberInput.press('Enter');
-//  await phoneNumberInput.type(phone, { delay: 100 });
-
-//  await phoneNumberInput.click();
-//  await phoneNumberInput.clear();
-//  await phoneNumberInput.fill(phone);
-
-const signUpCTA= signUpModal.getByRole("button",{name:"Sign Up"});
-
-  await expect(signUpCTA).toBeEnabled();
-  
-  await signUpCTA.click();
-
-const otpModal= page.getByText("To continue, please enter the 5-digit code sent to").locator('..');
- 
- expect(otpModal).toBeVisible();
-
- const otpValues = ["5", "4", "3", "2", "1"];
-
-  for (let i = 0; i < otpValues.length; i++) {
-    const otpInput = otpModal.locator(`input[name="otp${i}"]`);
-    await expect(otpInput).toBeVisible();
-    await otpInput.fill(otpValues[i]);
+  const otpDigits = ["5", "4", "3", "2", "1"];
+  for (let i = 0; i < otpDigits.length; i++) {
+    const input = otpModal.locator(`input[name="otp${i}"]`);
+    await expect(input).toBeVisible();
+    await input.pressSequentially(otpDigits[i], { delay: 50 });
   }
 
   await otpModal.getByRole("button", { name: "Continue" }).click();
 
-   const partialModal = page.getByText("Great choice!").locator('..');
+  // Great choice modal
+  await page.waitForSelector('h4:has-text("Great choice!")', {
+    state: "visible",
+    timeout: 30000,
+  });
 
-   partialModal.locator("button.SingleDatePickerInput_calendarIcon").click();
+  const modal = page.getByRole("heading", { name: /Great choice!/i, level: 4 }).locator("..");
 
+  // ────────────────────────────────────────
+  // Calendar open
+  // ────────────────────────────────────────
 
+  const calendarBtn = modal
+    .locator('button[class*="calendarIcon"]')
+    .or(modal.locator('button:has(svg[class*="calendarIcon"])'))
+    .or(modal.getByRole("button", { name: /calendar|date/i }));
 
+  await calendarBtn.click({ timeout: 15000 });
 
-   // 1. Month block locate karo
-const monthBlock = partialModal.locator(".ULDatepicker_month-block__8Kq8_");
+  await page.waitForTimeout(1500); // render buffer
 
-// 2. Current month / dropdown trigger pe click karo (yeh kholta hai list)
-await monthBlock.locator('button, [role="button"], [aria-haspopup="listbox"], select, div').first().click();
+  // ────────────────────────────────────────
+  // SELECT FIRST ENABLED DATE (FIXED)
+  // ────────────────────────────────────────
 
-// 3. Ab list khul chuki hai → September wale option pe click
-await partialModal.getByRole('option', { name: 'September', exact: true }).click();
-// ya agar role="option" nahi mil raha to simple text click
-// await monthBlock.getByText('September', { exact: true }).click();
+  const enabledDates = modal.locator(
+    'td.CalendarDay[role="button"][aria-disabled="false"]'
+  );
 
-// Wait thoda sa (UI update hone ke liye)
-await page.waitForTimeout(400);
+  const count = await enabledDates.count();
+  console.log("Enabled dates found:", count);
 
-// Same year ke liye (agar year ka class alag hai to usko adjust kar dena)
-const yearBlock = partialModal.locator('[class*="year"]'); // ya jo bhi year wali class ho
+  if (count === 0) {
+    throw new Error("No enabled date found in calendar");
+  }
 
-await yearBlock.locator('button, [role="button"], [aria-haspopup="listbox"], select').first().click();
+  const firstDate = enabledDates.first();
+  await expect(firstDate).toBeVisible({ timeout: 10000 });
+  await firstDate.click();
 
-await partialModal.getByRole('option', { name: '1999', exact: true }).click();
-// ya
-// await yearBlock.getByText('1999', { exact: true }).click();
-  // const monthAndyearDiv = partialModal.locator(".ULDatepicker_month-year-wrapper__Zh95r");
+  console.log("Date selected successfully");
 
-  // const monthSelect = monthAndyearDiv.locator(".ULDatepicker_month-block__8Kq8_").getByRole("combobox").selectOption("September");
+  // DOB verify
+  const dobInput = modal.getByRole("textbox", { name: /Date of Birth/i });
+  await expect(dobInput).toHaveValue(/\d{1,2}\/\d{1,2}\/\d{4}/, { timeout: 10000 });
 
-  /*
-  // Month wala (jo months list karta hai)
-const monthDropdown = partialModal
-  .locator('select')
-  .filter({ has: page.getByText('February') })   // current month visible ho to
-  .first();
-
-// Year wala (jo years list karta hai)
-const yearDropdown = partialModal
-  .locator('select')
-  .filter({ has: page.getByText('2010') })       // current year visible ho to
-  .first();
-
-await monthDropdown.selectOption('September');
-await yearDropdown.selectOption('1999');
-
-*/
-
-
-    
-})
+  console.log("Test passed: DOB selected successfully!");
+});
