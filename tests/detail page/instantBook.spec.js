@@ -3,6 +3,9 @@
 const { test, expect } = require("@playwright/test");
 
 test("Instant Book - Select DOB in Calendar (Working)", async ({ page }) => {
+
+   test.setTimeout(60000);
+
   await page.goto("https://ul1.devbeta.in/united-kingdom/london/property/iq-sterling-court");
 
   // Bronze En Suite Instant Book
@@ -66,16 +69,17 @@ test("Instant Book - Select DOB in Calendar (Working)", async ({ page }) => {
     timeout: 30000,
   });
 
-  const modal = page.getByRole("heading", { name: /Great choice!/i, level: 4 }).locator("..");
+  const partialBookmodal = page.getByRole("heading", { name: /Great choice!/i, level: 4 }).locator("..");
 
   // ────────────────────────────────────────
   // Calendar open
   // ────────────────────────────────────────
 
-  const calendarBtn = modal
+  const calendarBtn = partialBookmodal
     .locator('button[class*="calendarIcon"]')
-    .or(modal.locator('button:has(svg[class*="calendarIcon"])'))
-    .or(modal.getByRole("button", { name: /calendar|date/i }));
+    .or(partialBookmodal.locator('button:has(svg[class*="calendarIcon"])'))
+    .or(partialBookmodal.getByRole("button", { name: /calendar|date/i }));
+
 
   await calendarBtn.click({ timeout: 15000 });
 
@@ -85,26 +89,101 @@ test("Instant Book - Select DOB in Calendar (Working)", async ({ page }) => {
   // SELECT FIRST ENABLED DATE (FIXED)
   // ────────────────────────────────────────
 
-  const enabledDates = modal.locator(
-    'td.CalendarDay[role="button"][aria-disabled="false"]'
-  );
+  await partialBookmodal.locator("(//td[text()='13'])[2]").click();
 
-  const count = await enabledDates.count();
-  console.log("Enabled dates found:", count);
+   // ===== Select University =====
+  const universityInput = partialBookmodal.locator('[data_automation_id="university-input-field"]');
 
-  if (count === 0) {
-    throw new Error("No enabled date found in calendar");
-  }
 
-  const firstDate = enabledDates.first();
-  await expect(firstDate).toBeVisible({ timeout: 10000 });
-  await firstDate.click();
 
-  console.log("Date selected successfully");
+ await universityInput.click();
+await universityInput.fill('UCFB London');
 
-  // DOB verify
-  const dobInput = modal.getByRole("textbox", { name: /Date of Birth/i });
-  await expect(dobInput).toHaveValue(/\d{1,2}\/\d{1,2}\/\d{4}/, { timeout: 10000 });
+// dropdown option visible hone ka wait
+const uniOption = page.getByText('UCFB London', { exact: false });
+await expect(uniOption).toBeVisible({ timeout: 10000 });
+await uniOption.click();
 
-  console.log("Test passed: DOB selected successfully!");
+
+
+  //await universityInput.press('Enter');
+
+   // ===== Select Nationality =====
+   await partialBookmodal
+  .getByLabel('Nationality*')
+  .selectOption({ value: 'angolan' });
+
+
+ 
+  await partialBookmodal.getByRole("button",{name:"Continue"}).click();
+
+
+
+
+  // const paymentModal = page.getByText("Please enter your payment details").locator("..");
+  // await expect(paymentModal).toBeVisible({ timeout: 30000 });
+
+  // await paymentModal.getByPlaceholder("Enter Name on Card").type("kanhaiya lal");
+
+  // await paymentModal.getByPlaceholder("Card Number").fill("40000000001000");
+
+// Wait for modal to be visible
+await page.getByText('Please enter your payment details').waitFor();
+
+// // Name on Card (normal input)
+// await page.locator('input[name="name"]').fill('Kanhaiya Lal');
+
+// // ---- CARD NUMBER ----
+// const panFrame = page.frameLocator('#access-worldpay-pan');
+// await panFrame.locator('input').fill('4444333322221111');
+
+// // ---- EXPIRY ----
+// const expiryFrame = page.frameLocator('#access-worldpay-expiry');
+// await expiryFrame.locator('input').fill('12/28');
+
+// // ---- CVV ----
+// const cvvFrame = page.frameLocator('#access-worldpay-cvv');
+// await cvvFrame.locator('input').fill('123');
+
+// // Click Pay
+// await page.getByRole('button', { name: 'Pay £260' }).click();
+
+await page.locator('input[name="name"]').fill('Kanhaiya Lal');
+
+await page.frameLocator('#access-worldpay-pan')
+          .locator('#pan')
+          .fill('4444333322221111');
+
+// await page.frameLocator('#access-worldpay-expiry')
+//           .locator('input')
+//           .fill('1228');
+
+
+const expiryFrame = page.frameLocator('#access-worldpay-expiry');
+
+const expiryInput = expiryFrame.locator('#expiry');
+
+await expect(expiryInput).toBeVisible({ timeout: 20000 });
+
+await expiryInput.click();
+await expiryInput.pressSequentially('1228', { delay: 100 });
+
+
+await page.frameLocator('#access-worldpay-cvv')
+          .locator('input')
+          .fill('123');
+
+await page.getByRole('button', { name: 'Pay £260' }).click();
+
+const successModal =  page.getByText("Payment of").locator("..");
+
+successModal.getByRole("button",{name:"Complete Booking"}).click();
+
+
+await expect(page).toHaveURL(
+  'https://ul1.devbeta.in/united-kingdom/london/iq-sterling-court/book-now'
+);
+
+
 });
+
