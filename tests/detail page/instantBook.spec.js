@@ -120,33 +120,10 @@ await uniOption.click();
 
 
 
-  // const paymentModal = page.getByText("Please enter your payment details").locator("..");
-  // await expect(paymentModal).toBeVisible({ timeout: 30000 });
-
-  // await paymentModal.getByPlaceholder("Enter Name on Card").type("kanhaiya lal");
-
-  // await paymentModal.getByPlaceholder("Card Number").fill("40000000001000");
-
-// Wait for modal to be visible
+ 
 await page.getByText('Please enter your payment details').waitFor();
 
-// // Name on Card (normal input)
-// await page.locator('input[name="name"]').fill('Kanhaiya Lal');
 
-// // ---- CARD NUMBER ----
-// const panFrame = page.frameLocator('#access-worldpay-pan');
-// await panFrame.locator('input').fill('4444333322221111');
-
-// // ---- EXPIRY ----
-// const expiryFrame = page.frameLocator('#access-worldpay-expiry');
-// await expiryFrame.locator('input').fill('12/28');
-
-// // ---- CVV ----
-// const cvvFrame = page.frameLocator('#access-worldpay-cvv');
-// await cvvFrame.locator('input').fill('123');
-
-// // Click Pay
-// await page.getByRole('button', { name: 'Pay £260' }).click();
 
 await page.locator('input[name="name"]').fill('Kanhaiya Lal');
 
@@ -154,9 +131,6 @@ await page.frameLocator('#access-worldpay-pan')
           .locator('#pan')
           .fill('4444333322221111');
 
-// await page.frameLocator('#access-worldpay-expiry')
-//           .locator('input')
-//           .fill('1228');
 
 
 const expiryFrame = page.frameLocator('#access-worldpay-expiry');
