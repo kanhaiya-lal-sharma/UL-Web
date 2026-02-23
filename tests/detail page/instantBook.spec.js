@@ -2,7 +2,7 @@
 
 const { test, expect } = require("@playwright/test");
 
-test("Instant Book - Select DOB in Calendar (Working)", async ({ page }) => {
+test("Instant Book test ", async ({ page }) => {
 
    test.setTimeout(60000);
 
