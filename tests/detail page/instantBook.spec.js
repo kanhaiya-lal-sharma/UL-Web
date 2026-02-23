@@ -151,7 +151,15 @@ await page.getByRole('button', { name: 'Pay £260' }).click();
 
 const successModal =  page.getByText("Payment of").locator("..");
 
-successModal.getByRole("button",{name:"Complete Booking"}).click();
+await expect(successModal).toBeVisible({ timeout: 30000 });
+
+// 📸 Take screenshot
+await successModal.screenshot({ 
+  path: `screenshots/payment-success-${Date.now()}.png`,
+  fullPage: false
+});
+
+ await successModal.getByRole("button",{name:"Complete Booking"}).click();
 
 
 await expect(page).toHaveURL(
