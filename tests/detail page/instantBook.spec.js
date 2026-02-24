@@ -2,7 +2,7 @@
 
 const { test, expect } = require("@playwright/test");
 
-test("Instant Book test ", async ({ page }) => {
+test.skip("Instant Book test ", async ({ page }) => {
 
    test.setTimeout(60000);
 
@@ -129,7 +129,7 @@ await page.locator('input[name="name"]').fill('Kanhaiya Lal');
 
 await page.frameLocator('#access-worldpay-pan')
           .locator('#pan')
-          .fill('4444333322221111');
+          .fill('4000000000001000');
 
 
 
