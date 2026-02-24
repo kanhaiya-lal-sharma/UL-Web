@@ -168,20 +168,37 @@ await page.locator("#name").fill("gardian jii");
 
   await page.getByRole("combobox",{name:"relationship"}).selectOption("Relative");
 
+  await page.locator('//div[@class="intro-close-btn"]').click();
+
   await page.locator("//div[text()='Continue']").click();
 
 
-  const courseField = page.getByRole("textbox",{name:"courseName"});
-  courseField.focus();
-  courseField.fill("Bca");
+  // const courseField = page.getByRole("textbox",{name:"courseName"});
+  // courseField.focus();
+  // courseField.fill("Bca");
 
-  await page.getByRole("combobox",{name:"yearOfStudy"}).selectOption("Second Year");
+  // await page.getByRole("combobox",{name:"yearOfStudy"}).selectOption("Second Year");
 
-  await page.getByRole("combobox",{name:"visaStatus"}).selectOption("Pending");
+  // await page.getByRole("combobox",{name:"visaStatus"}).selectOption("Pending");
 
-  await page.getByRole("button",{name:"Social media"}).click();
+  // await page.getByRole("button",{name:"Social media"}).click();
 
-  await page.getByRole("button",{name:"Submit & reserve"}).click();
+  // await page.getByRole("button",{name:"Submit & reserve"}).click();
+
+
+  await page.locator('//input[@name="courseName"]').fill('BCA');
+
+ await page.locator('//select[@name="yearOfStudy"]').selectOption('fourthYear');
+
+await page.locator('//select[@name="visaStatus"]').selectOption('Pending');
+
+await page.locator('//button[div[contains(text(), "Social media")]]').click();
+
+await page.locator('//button[.//div[text()="Submit & reserve"]]').click();
+
+await page.waitForTimeout(3000);  // 3 seconds break – ya waitForURL / waitForLoadState use kar sakte ho
+
+await expect(page).toHaveURL("https://ul1.devbeta.in/united-kingdom/london/dashwood-studios-residence/book-now/thank-you");
 
 }
 )
