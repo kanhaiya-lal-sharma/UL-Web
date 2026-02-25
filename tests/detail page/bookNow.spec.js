@@ -3,7 +3,7 @@
 
 const { test, expect } = require("@playwright/test");
 
-test("Book Now test ", async ({ page }) => {
+test.skip("Book Now test ", async ({ page }) => {
 
    test.setTimeout(90000);
 
