@@ -200,5 +200,7 @@ await page.waitForTimeout(3000);  // 3 seconds break – ya waitForURL / waitFor
 
 await expect(page).toHaveURL("https://ul1.devbeta.in/united-kingdom/london/dashwood-studios-residence/book-now/thank-you");
 
+
+
 }
 )
